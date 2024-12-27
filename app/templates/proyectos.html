@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Proyectos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="project-form-container">
+        <h2>Crear Proyecto</h2>
+
+        <!-- Formulario para agregar un nuevo proyecto -->
+        <form action="{{ url_for('proyecto.proyectos') }}" method="post">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" id="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea name="descripcion" id="descripcion"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="id_lider">Líder del Proyecto:</label>
+                <select name="id_lider" id="id_lider" required>
+                    {% for colaborador in colaboradores %}
+                        <option value="{{ colaborador.id_colaborador }}">{{ colaborador.nombre }} {{ colaborador.apellidos }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_inicio">Fecha de Inicio:</label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio">
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_fin">Fecha de Fin:</label>
+                <input type="date" name="fecha_fin" id="fecha_fin">
+            </div>
+
+            <button type="submit" class="submit-button">Guardar Proyecto</button>
+        </form>
+
+        <h3>Proyectos Existentes</h3>
+
+        <!-- Tabla para mostrar los proyectos existentes -->
+        <table class="project-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Líder</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Fin</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proyecto in proyectos %}
+                <tr>
+                    <td>{{ proyecto.nombre }}</td>
+                    <td>{{ proyecto.descripcion }}</td>
+                    <td>{{ proyecto.lider.nombre }} {{ proyecto.lider.apellidos }}</td>
+                    <td>{{ proyecto.fecha_inicio }}</td>
+                    <td>{{ proyecto.fecha_fin }}</td>
+                    <td>
+                        <a href="{{ url_for('proyecto.actividades', proyecto_id=proyecto.id_proyecto) }}" class="action-button">Gestionar Actividades</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ url_for('colaborador.dashboard') }}" class="return-button">Volver al Dashboard</a>
+    </div>
+</body>
+</html>

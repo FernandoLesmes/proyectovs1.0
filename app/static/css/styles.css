@@ -1,0 +1,472 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container for login form */
+.login-container {
+    background-color: #fff;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+/* Heading style */
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Label and input styling */
+.login-container label {
+    display: block;
+    margin-top: 10px;
+    color: #555;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Button styling */
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.login-container button:hover {
+    background-color: #2fbe38;
+}
+
+/* Alert messages styling */
+.alert-messages {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+
+
+
+
+
+
+
+/* General styles for the dashboard */
+.dashboard-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #c5b0b0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(3, 21, 124, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Title styling */
+.dashboard-container h2 {
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: #1c1916;
+}
+
+/* Flex container to hold the buttons */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 70px;
+    justify-content: center;
+}
+
+/* Button styling */
+.dashboard-button {
+    width: 150px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #87CEEB; /* Light blue color */
+    border: none;
+    border-radius: 4px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Button hover effect */
+.dashboard-button:hover {
+    background-color: #13171b; /* Darker blue */
+    color: #fff;
+}
+
+ 
+
+
+/* Adminstrar colaboradores
+
+
+/* Contenedor general */
+.user-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+/* Título de la página */
+.user-form-container h2 {
+    font-size: 24px;
+    color: #654321;
+    margin-bottom: 20px;
+}
+
+/* Formulario de ingreso */
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 150px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.form-group input {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botón de guardar */
+.submit-button {
+    background-color: #87CEEB;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    background-color: #4682B4;
+    color: #fff;
+}
+
+/* Tabla de colaboradores */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.user-table th, .user-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.user-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Botón de regreso al Dashboard */
+.return-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #87CEEB;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.return-button:hover {
+    background-color: #4682B4;
+    color: #fff;
+}
+
+
+
+
+
+/*estilos proyectos 
+/* Contenedor general para la sección de "Crear Proyecto" */
+.project-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+/* Título principal */
+.project-form-container h2 {
+    font-size: 24px;
+    color: #654321;
+    margin-bottom: 20px;
+}
+
+/* Estilos del formulario */
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 150px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botón de guardar proyecto */
+.submit-button {
+    background-color: #87CEEB;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background-color: #4682B4;
+    color: #fff;
+}
+
+/* Tabla de proyectos */
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.project-table th, .project-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.project-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+
+
+/*Actividades 
+
+
+
+/* Estilo de enlace para "Gestionar Actividades" */
+.action-button {
+    color: #4682B4;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.action-button:hover {
+    color: #1E90FF;
+    text-decoration: underline;
+}
+
+/* Botón de regreso al Dashboard */
+.return-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #87CEEB;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.return-button:hover {
+    background-color: #4682B4;
+    color: #fff;
+}
+
+
+
+
+
+/*   actividades 
+
+/* Contenedor general para la sección de "Gestionar Actividades" */
+.activity-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+/* Título principal */
+.activity-form-container h2 {
+    font-size: 24px;
+    color: #654321;
+    margin-bottom: 20px;
+}
+
+/* Estilos del formulario */
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 150px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botón de guardar actividad */
+.submit-button {
+    background-color: #87CEEB;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background-color: #4682B4;
+    color: #fff;
+}
+
+/* Tabla de actividades */
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.activity-table th, .activity-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.activity-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Botón de regreso a proyectos */
+.return-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #87CEEB;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.return-button:hover {
+    background-color: #4682B4;
+    color: #fff;
+}

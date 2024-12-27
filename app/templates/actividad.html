@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Actividades</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="activity-form-container">
+        <h2>Actividades del Proyecto: {{ proyecto.nombre }}</h2>
+
+        <!-- Formulario para agregar una nueva actividad -->
+        <form action="{{ url_for('proyecto.actividades', proyecto_id=proyecto.id_proyecto) }}" method="post"> 
+            <div class="form-group">
+                <label for="nombre">Nombre de la Actividad:</label>
+                <input type="text" name="nombre" id="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea name="descripcion" id="descripcion"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_inicio">Fecha de Inicio:</label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio">
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_fin">Fecha de Fin:</label>
+                <input type="date" name="fecha_fin" id="fecha_fin">
+            </div>
+
+            <div class="form-group">
+                <label for="visibilidad">Visibilidad:</label>
+                <select name="visibilidad" id="visibilidad" required>
+                    <option value="Publica">Pública</option>
+                    <option value="Privada">Privada</option>
+                    <option value="Limitada">Limitada</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="id_colaborador">Asignar a Colaborador:</label>
+                <select name="id_colaborador" id="id_colaborador" required>
+                    <option value="">Seleccione un colaborador</option>
+                    {% for colaborador in colaboradores %}
+                        <option value="{{ colaborador.id_colaborador }}">{{ colaborador.nombre }} {{ colaborador.apellidos }}</option>
+                    {% endfor %}
+                
+                
+                </select>
+
+            </div>
+
+            <button type="submit" class="submit-button">Guardar Actividad</button>
+        </form>
+
+        <hr>
+
+        <!-- Tabla para mostrar las actividades existentes -->
+        <table class="activity-table">
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha de Fin</th>
+                <th>Visibilidad</th>
+                <th>Colaborador Asignado</th>
+            </tr>
+            {% for actividad in actividades %}
+            <tr>
+                <td>{{ actividad.nombre }}</td>
+                <td>{{ actividad.descripcion }}</td>
+                <td>{{ actividad.fecha_inicio }}</td>
+                <td>{{ actividad.fecha_fin }}</td>
+                <td>{{ actividad.visibilidad }}</td>
+                <td>{{ actividad.colaborador.nombre }} {{ actividad.colaborador.apellidos }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Botón de regreso a Proyectos -->
+        <a href="{{ url_for('proyecto.proyectos') }}" class="return-button">Volver a Proyectos</a>
+    </div>
+</body>
+</html>

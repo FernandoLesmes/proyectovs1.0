@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Colaborador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Bienvenido al Dashboard</h2>
+        <p>Este es el panel de control para colaboradores. Aquí puedes acceder a tus funciones principales.</p>
+
+
+        <!-- Contenedor para los botones -->
+        <div class="button-group">
+            <!-- Botón para Administrar Colaboradores (Visible solo para Admin) -->
+            {% if session['rol'] == 'Admin' %}
+                <a href="{{ url_for('colaborador.users') }}" class="dashboard-button">Administrar Colaboradores</a>
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Crear Proyectos</a>
+            {% endif %}
+        
+            <!-- Botón para Ver Proyectos (Visible para Usuarios y Líderes de Proyecto) -->
+            {% if session['rol'] in ['Admin','Usuario', 'Líder de Proyecto'] %}
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Ver Proyectos</a>
+            {% endif %}
+        
+            <!-- Botón para Crear Proyectos (Solo Líder de Proyecto) -->
+            {% if session['rol'] == 'Líder de Proyecto' %}
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Crear Proyectos</a>
+            {% endif %}
+        
+            <!-- Botón para Cerrar Sesión (Visible para todos) -->
+            <form action="{{ url_for('colaborador.logout') }}" method="post">
+                <button type="submit" class="dashboard-button">Cerrar sesión</button>
+            </form>
+        </div>
+        
+    </div>
+</body>
+</html>
+

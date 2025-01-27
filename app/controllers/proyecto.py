@@ -4,11 +4,10 @@ from app.models.proyecto import Proyecto
 from app.models.actividades import Actividad
 from app.models.colaborador import Colaborador
 from app.models.roles import Rol
-from app.controllers.colaborador import validar_sesion  # Aquí importas la función
+from app.models.colaborador_proyectos_roles import ColaboradorProyectosRoles  # Importar relación
+from app.controllers.colaborador import validar_sesion
 from app import db
 from sqlalchemy.orm import joinedload
-
-
 
 # Crear el blueprint para el controlador de proyectos
 proyecto_bp = Blueprint('proyecto', __name__)
@@ -16,58 +15,55 @@ proyecto_bp = Blueprint('proyecto', __name__)
 # Ruta para ver y crear proyectos
 @proyecto_bp.route('/proyectos', methods=['GET', 'POST'])
 def proyectos():
-    
-    #usuario_id = session.get('usuario_id') #aca
-    #rol = session.get('rol')  #aca
     usuario_id = session.get('usuario_id')
     rol = session.get('rol')
 
-# Validar sesión de forma estricta
+    # Validar sesión
     if not validar_sesion():
-     flash("Sesión no válida. Por favor, inicia sesión nuevamente.", "warning")
-     return redirect(url_for('colaborador.login'))
-
+        flash("Sesión no válida. Por favor, inicia sesión nuevamente.", "warning")
+        return redirect(url_for('colaborador.login'))
 
     if not usuario_id or not rol:
         flash("Por favor, inicia sesión primero.", "warning")
         return redirect(url_for('colaborador.login'))
 
-
     if request.method == 'POST':
         # Crear un nuevo proyecto
         nombre = request.form.get('nombre')
         descripcion = request.form.get('descripcion')
-        id_lider = request.form.get('id_lider') or session.get('user_id')
+        id_lider = request.form.get('id_lider') or usuario_id
         fecha_inicio = request.form.get('fecha_inicio')
         fecha_fin = request.form.get('fecha_fin')
-        
+
         nuevo_proyecto = Proyecto(
             nombre=nombre,
             descripcion=descripcion,
             id_lider=id_lider,
             fecha_inicio=fecha_inicio,
             fecha_fin=fecha_fin
-        )     
+        )
         db.session.add(nuevo_proyecto)
         db.session.commit()
+
+        # Asignar automáticamente a Fernando (Admin) como Admin del proyecto
+        admin_rol = Rol.query.filter_by(nombre_rol='Admin').first()
+        if admin_rol:
+            admin_relacion = ColaboradorProyectosRoles(
+                id_colaborador=2,  # Fernando siempre es id_colaborador=2
+                id_proyecto=nuevo_proyecto.id_proyecto,
+                id_rol=admin_rol.id_rol
+            )
+            db.session.add(admin_relacion)
+
+        # Asegurar que el usuario actual sea Líder de Proyecto
+        lider_rol = Rol.query.filter_by(nombre_rol='Líder de Proyecto').first()
+        colaborador = Colaborador.query.get(usuario_id)
+        if colaborador and lider_rol and colaborador.id_rol != lider_rol.id_rol:
+            colaborador.id_rol = lider_rol.id_rol
+            session['rol'] = 'Líder de Proyecto'  # Actualizar en la sesión
+            db.session.commit()
+
         flash('Proyecto creado exitosamente. Ahora eres Líder de Proyecto.', 'success')
-
-         # Cambiar el rol del usuario a Líder de Proyecto si no lo es
-        colaborador = Colaborador.query.get(usuario_id)
-        if colaborador.rol.nombre_rol != 'Líder de Proyecto':
-            rol_lider = Rol.query.filter_by(nombre_rol='Líder de Proyecto').first()
-            if rol_lider:
-                colaborador.id_rol = rol_lider.id_rol
-                session['rol'] = 'Líder de Proyecto'  # Actualizar en la sesión
-
-
-        #Convertir al usuario en Líder de Proyecto si no lo es
-        colaborador = Colaborador.query.get(usuario_id)
-        if colaborador.rol.nombre_rol != 'Líder de Proyecto':
-            colaborador.id_rol = Rol.query.filter_by(nombre_rol='Líder de Proyecto').first().id_rol
-            session['rol'] = 'Líder de Proyecto'  # Actualizar el rol en la sesión
-
-        
 
     # Filtrar proyectos según el rol
     if rol == 'Admin':
@@ -75,13 +71,13 @@ def proyectos():
     else:
         proyectos = Proyecto.query.filter(
             (Proyecto.id_lider == usuario_id) |
-            (Proyecto.actividades.any(Actividad.id_colaborador == usuario_id))
+            (Proyecto.colaboradores_roles.any(id_colaborador=usuario_id))
         ).all()
 
-        print("DEBUG - Proyectos cargados:", proyectos)
-
+    print("DEBUG - Proyectos cargados:", proyectos)
     colaboradores = Colaborador.query.all()  # Listado de colaboradores
     return render_template('proyectos.html', proyectos=proyectos, colaboradores=colaboradores)
+
 
 # Ruta para gestionar actividades dentro de un proyecto
 @proyecto_bp.route('/proyectos/<int:proyecto_id>/actividades', methods=['GET', 'POST'])
@@ -89,10 +85,9 @@ def actividades(proyecto_id):
     usuario_id = session.get('usuario_id')
     rol = session.get('rol')
 
-
-    if not usuario_id or not rol:# 02/
-        flash("Por favor, inicia sesión primero.", "warning")
-        return redirect(url_for('colaborador.login'))#02/
+    if not validar_sesion():
+        flash("Sesión no válida. Por favor, inicia sesión nuevamente.", "warning")
+        return redirect(url_for('colaborador.login'))
 
     proyecto = Proyecto.query.get(proyecto_id)
     if not proyecto:
@@ -100,7 +95,7 @@ def actividades(proyecto_id):
         return redirect(url_for('proyecto.proyectos'))
 
     # Verificar acceso al proyecto
-    if rol != 'Admin' and proyecto.id_lider != usuario_id and not Actividad.query.filter_by(id_proyecto=proyecto_id, id_colaborador=usuario_id).first():
+    if rol != 'Admin' and proyecto.id_lider != usuario_id and not ColaboradorProyectosRoles.query.filter_by(id_colaborador=usuario_id, id_proyecto=proyecto_id).first():
         flash('No tienes permiso para acceder a este proyecto.', 'danger')
         return redirect(url_for('proyecto.proyectos'))
 

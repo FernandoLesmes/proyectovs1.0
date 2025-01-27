@@ -25,6 +25,7 @@ def create_app():
     app.config['SESSION_USE_SIGNER'] = True    # Firmar cookies para mayor seguridad
     app.config['PERMANENT_SESSION_LIFETIME'] = 0 #05/12/2024
     Session(app)  # Inicializa Flask-Session
+    
 
     # Importar y registrar el blueprint de colaboradores
     from app.controllers.colaborador import colaborador_bp

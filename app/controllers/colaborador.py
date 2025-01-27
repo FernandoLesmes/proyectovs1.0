@@ -13,14 +13,18 @@ def validar_sesion():
     """Valida la sesión actual comparando el token de sesión en la base de datos."""
     usuario_id = session.get('usuario_id')
     session_token = session.get('session_token')
+    ip_address = session.get('ip_address')  # aca 25/0
 
+    
     print("DEBUG - Validar Sesión:")
     print(f"Usuario ID: {usuario_id}")
     print(f"Session Token: {session_token}")
 
-    if not usuario_id or not session_token:
-        print("DEBUG - Falta usuario_id o session_token")
-        return False
+    #if not usuario_id or not session_token:
+        #print("DEBUG - Falta usuario_id o session_token")
+        #return False
+    if not usuario_id or not session_token or ip_address != request.remote_addr:
+        return False    
 
     colaborador = Colaborador.query.get(usuario_id)
     if not colaborador or colaborador.session_token != session_token:
@@ -41,17 +45,16 @@ def login():
 
         # Verificar si el colaborador existe y si la contraseña es correcta
         if colaborador and colaborador.check_password(password):
+            session_token = str(uuid.uuid4())
             session.clear()  # Limpia cualquier sesión anterior
 
             # Generar un token único para la sesión
             session_token = str(uuid.uuid4())
-
-            # Iniciar la sesión del usuario
             session['usuario_id'] = colaborador.id_colaborador
             session['rol'] = colaborador.rol.nombre_rol
             session['session_token'] = session_token
-
-            session.modified = True
+            session['ip_address'] = request.remote_addr
+            #session.modified = True
 
             # Guardar el token único en la base de datos
             colaborador.session_token = session_token
@@ -66,14 +69,51 @@ def login():
     # Si la solicitud es GET, renderiza el formulario de inicio de sesión
     return render_template('login.html')
 
+
+
+#@colaborador_bp.route('/dashboard')
+#def dashboard():
+    #if not validar_sesion():
+        #flash("Sesión no válida. Por favor, inicia sesión nuevamente.", "warning")
+        #return redirect(url_for('colaborador.login'))
+    
+    
+
+    #print("DEBUG - Sesión actual en dashboard:", session)
+    #return render_template('dashboard.html')
+
 @colaborador_bp.route('/dashboard')
 def dashboard():
     if not validar_sesion():
         flash("Sesión no válida. Por favor, inicia sesión nuevamente.", "warning")
         return redirect(url_for('colaborador.login'))
 
+    # Obtener datos del usuario desde la base de datos
+    usuario_id = session.get('usuario_id')
+    colaborador = Colaborador.query.get(usuario_id)
+    rol = session.get('rol')
+
+    # Mensaje de bienvenida dinámico basado en el rol
+    mensaje = f"Bienvenido al panel de control, {colaborador.nombre}." if colaborador else "Bienvenido."
+
     print("DEBUG - Sesión actual en dashboard:", session)
-    return render_template('dashboard.html')
+
+    # Renderizar la plantilla con datos dinámicos
+    return render_template(
+        'dashboard.html',
+        usuario=colaborador,
+        rol=rol,
+        mensaje=mensaje
+    )
+
+
+
+
+
+
+
+
+
 
 
 @colaborador_bp.route('/logout', methods=['POST'])

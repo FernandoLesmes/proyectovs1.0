@@ -8,35 +8,35 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <h2>Bienvenido al Dashboard</h2>
-        <p>Este es el panel de control para colaboradores. Aquí puedes acceder a tus funciones principales.</p>
-
+        <h2>Bienvenido, {{ usuario.nombre }} {{ usuario.apellidos }}</h2>
+        <p>Tu rol actual: <strong>{{ rol }}</strong></p>
+        <p>{{ mensaje }}</p> <!-- Mensaje dinámico desde el backend -->
 
         <!-- Contenedor para los botones -->
         <div class="button-group">
-            <!-- Botón para Administrar Colaboradores (Visible solo para Admin) -->
-            {% if session['rol'] == 'Admin' %}
+            <!-- Opciones del Administrador -->
+            {% if rol == 'Admin' %}
                 <a href="{{ url_for('colaborador.users') }}" class="dashboard-button">Administrar Colaboradores</a>
-                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Crear Proyectos</a>
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Gestionar Proyectos</a>
             {% endif %}
-        
-            <!-- Botón para Ver Proyectos (Visible para Usuarios y Líderes de Proyecto) -->
-            {% if session['rol'] in ['Admin','Usuario', 'Líder de Proyecto'] %}
-                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Ver Proyectos</a>
+
+            <!-- Opciones del Líder de Proyecto -->
+            {% if rol == 'Líder de Proyecto' %}
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Ver y Crear Proyectos</a>
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Gestionar Proyectos</a>
             {% endif %}
-        
-            <!-- Botón para Crear Proyectos (Solo Líder de Proyecto) -->
-            {% if session['rol'] == 'Líder de Proyecto' %}
-                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Crear Proyectos</a>
+
+            <!-- Opciones del Usuario -->
+            {% if rol == 'Usuario' %}
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Ver Mis Proyectos</a>
+                <a href="{{ url_for('proyecto.proyectos') }}" class="dashboard-button">Actualizar Actividades</a>
             {% endif %}
-        
-            <!-- Botón para Cerrar Sesión (Visible para todos) -->
+
+            <!-- Botón para Cerrar Sesión -->
             <form action="{{ url_for('colaborador.logout') }}" method="post">
                 <button type="submit" class="dashboard-button">Cerrar sesión</button>
             </form>
         </div>
-        
     </div>
 </body>
 </html>
-
